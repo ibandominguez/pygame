@@ -15,10 +15,10 @@ clock = pygame.time.Clock()
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, width, height, frames_count):
         pygame.sprite.Sprite.__init__(self)
-        sheet = pygame.image.load('assets/bike.png').convert_alpha()
-        self.image = pygame.transform.scale(sheet, (270, 230))
+        sheet = pygame.image.load('assets/bike-output.png').convert_alpha()
+        self.image = pygame.transform.scale(sheet, (width, height))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2   #center of rectangle
@@ -26,11 +26,11 @@ class Player(pygame.sprite.Sprite):
 
         self.index = 0
 
-        sprite_sheet = SpriteSheet('assets/bike.png')
+        sprite_sheet = SpriteSheet('assets/bike-output.png')
         self.animation = []
 
-        for i in range(24):
-            self.animation.append(sprite_sheet.get_image(270 * i, 0, 270, 230))
+        for i in range(frames_count - 1):
+            self.animation.append(sprite_sheet.get_image(width * i, 0, width, height))
 
     def update(self):
         if self.index < len(self.animation) - 1:
@@ -55,7 +55,7 @@ class SpriteSheet(object):
 
 
 all_sprites = pygame.sprite.Group()
-player = Player()
+player = Player(135, 115, 25)
 all_sprites.add(player)
 
 running = True
