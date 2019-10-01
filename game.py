@@ -1,7 +1,7 @@
 import pygame
 
-WIDTH = 1000
-HEIGHT = 700
+WIDTH = 400
+HEIGHT = 400
 FPS = 60
 
 WHITE = (255, 255, 255)
@@ -17,109 +17,28 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        width = 270
-        height = 230
         sheet = pygame.image.load('assets/bike.png').convert_alpha()
         self.image = pygame.transform.scale(sheet, (270, 230))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH / 2 - 480   #center of rectangle
-        self.rect.bottom = HEIGHT - 5  #pixels up from the bottom
-        self.speedx = 0
-        self.speedy = 0
-        self.walkingright = []
-        self.walkingleft = []
-        self.walkingup = []
-        self.walkingdown = []
-        self.direction = 'R'
+        self.rect.centerx = WIDTH / 2   #center of rectangle
+        self.rect.bottom = HEIGHT  #pixels up from the bottom
+
+        self.index = 0
 
         sprite_sheet = SpriteSheet('assets/bike.png')
-        #Facing Down
-        # Start at x = 0. Pass 48 as the third and
-        # fourth argument (width and height).
-        image = sprite_sheet.get_image(0,0,48,48)
-        self.walkingdown.append(image)
-        image = sprite_sheet.get_image(48,0,48,48)
-        self.walkingdown.append(image)
-        image = sprite_sheet.get_image(96,0,48,48)
-        self.walkingdown.append(image)
-        image = sprite_sheet.get_image(144,0,48,48)
-        self.walkingdown.append(image)
+        self.animation = []
 
-        #Facing Up
-        image = sprite_sheet.get_image(0,144,48,48)
-        self.walkingup.append(image)
-        image = sprite_sheet.get_image(48,144,48,48)
-        self.walkingup.append(image)
-        image = sprite_sheet.get_image(96,144,48,48)
-        self.walkingup.append(image)
-        image = sprite_sheet.get_image(144,144,48,48)
-        self.walkingup.append(image)
-
-        #Facing Right
-        image = sprite_sheet.get_image(0,96,48,48)
-        self.walkingright.append(image)
-        image = sprite_sheet.get_image(48,96,48,48)
-        self.walkingright.append(image)
-        image = sprite_sheet.get_image(96,96,48,48)
-        self.walkingright.append(image)
-        image = sprite_sheet.get_image(144,96,48,48)
-        self.walkingright.append(image)
-
-        #Facing Left
-        image = sprite_sheet.get_image(0,48,48,48)
-        self.walkingleft.append(image)
-        image = sprite_sheet.get_image(48,48,48,48)
-        self.walkingleft.append(image)
-        image = sprite_sheet.get_image(96,48,48,48)
-        self.walkingleft.append(image)
-        image = sprite_sheet.get_image(144,48,48,48)
-        self.walkingleft.append(image)
+        for i in range(24):
+            self.animation.append(sprite_sheet.get_image(270 * i, 0, 270, 230))
 
     def update(self):
-        pos_x = self.rect.x
-        # You also need the y position for the vertical movement.
-        pos_y = self.rect.y
-        if self.direction == "R":
-            frame = (pos_x // 30) % len(self.walkingright)
-            self.image = self.walkingright[frame]
-        if self.direction == "L":
-            frame = (pos_x // 30) % len(self.walkingleft)
-            self.image = self.walkingleft[frame]
-        if self.direction == "U":
-            frame = (pos_y // 30) % len(self.walkingup)
-            self.image = self.walkingup[frame]
-        if self.direction == "D":
-            frame = (pos_y // 30) % len(self.walkingdown)
-            self.image = self.walkingdown[frame]
+        if self.index < len(self.animation) - 1:
+            self.index = self.index + 1
+        else:
+            self.index = 0
 
-        self.speedx = 0 #Need these to make sure
-        self.speedy = 0 #Sprite stops moving on keyup
-        keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_LEFT]:
-            self.speedx = -5
-            self.direction = 'L'
-        if keystate[pygame.K_RIGHT]:
-            self.speedx = 5
-            self.direction = 'R'
-        if keystate[pygame.K_UP]:
-            self.speedy = -5
-            self.direction = 'U'
-        if keystate[pygame.K_DOWN]:
-            self.speedy = 5
-            self.direction = 'D'
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
-
-        #Set Walls for Width and Height
-        if self.rect.right > WIDTH:
-            self.rect.rect = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > HEIGHT:
-            self.rect.bottom = HEIGHT
+        self.image = self.animation[self.index]
 
 
 class SpriteSheet(object):
