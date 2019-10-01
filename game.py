@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         width = 25
         height = 25
         sheet = pygame.image.load('assets/bike.png').convert_alpha()
-        self.image = pygame.transform.scale(sheet, (48, 48))
+        self.image = pygame.transform.scale(sheet, (270, 230))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2 - 480   #center of rectangle
