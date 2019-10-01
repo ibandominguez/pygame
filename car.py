@@ -18,7 +18,7 @@ class Car(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, color, [0, 0, width, height])
 
         # Instead we could load a proper pciture of a car...
-        self.image = pygame.image.load("assets/bike.png").convert_alpha()
+        self.image = pygame.image.load("./assets/bike.png").convert_alpha()
 
         # Fetch the rectangle object that has the dimensions of the image.
         self.rect = self.image.get_rect()
