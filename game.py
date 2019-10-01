@@ -17,8 +17,8 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        width = 25
-        height = 25
+        width = 270
+        height = 230
         sheet = pygame.image.load('assets/bike.png').convert_alpha()
         self.image = pygame.transform.scale(sheet, (270, 230))
         self.image.set_colorkey(BLACK)
