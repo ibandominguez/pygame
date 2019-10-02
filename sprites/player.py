@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, width, height, x, y, frames_count):
         pygame.sprite.Sprite.__init__(self)
-        self.sheet = pygame.image.load('assets/bike-output.png').convert_alpha()
+        self.sheet = pygame.image.load('assets/bike.png').convert_alpha()
         self.image = pygame.transform.scale(self.sheet, (width, height))
         self.rect = self.image.get_rect()
         self.rect.centerx = x  # center of rectangle
