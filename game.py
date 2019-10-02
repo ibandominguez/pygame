@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(sheet, (width, height))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH / 2   #center of rectangle
+        self.rect.centerx = WIDTH / 2  # center of rectangle
         self.rect.bottom = HEIGHT  #pixels up from the bottom
 
         self.index = 0
@@ -50,7 +50,7 @@ class SpriteSheet(object):
     def get_image(self, x, y, width, height):
         # Use a transparent surface as the base image (pass pygame.SRCALPHA).
         image = pygame.Surface([width, height], pygame.SRCALPHA)
-        image.blit(self.sprite_sheet, (0,0), (x, y, width, height))
+        image.blit(self.sprite_sheet, (0, 0), (x, y, width, height))
         return image
 
 
@@ -58,9 +58,15 @@ all_sprites = pygame.sprite.Group()
 player = Player(135, 115, 25)
 all_sprites.add(player)
 
+fps = 10
 running = True
 while running:
-    clock.tick(FPS)
+    if fps < 200:
+        fps = fps + 1
+    else:
+        fps = 10
+
+    clock.tick(fps)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
