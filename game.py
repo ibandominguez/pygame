@@ -61,12 +61,12 @@ all_sprites.add(player)
 fps = 10
 running = True
 while running:
-    if fps < 200:
-        fps = fps + 1
+    if fps < 2000:
+        fps = fps + 5
     else:
         fps = 10
 
-    clock.tick(fps)
+    clock.tick(fps / 10)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
