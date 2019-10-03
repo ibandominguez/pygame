@@ -1,7 +1,7 @@
 import pygame
 import constants
 
-from sprites.sprite import Sprite
+from sprite import Sprite
 
 pygame.init()
 pygame.display.set_caption(constants.TITLE)
