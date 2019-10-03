@@ -1,8 +1,8 @@
 # Game Config
 TITLE = 'Siente la energia'
-WIDTH = 400
-HEIGHT = 400
-FPS = 100
+WIDTH = 432
+HEIGHT = 550
+FPS = 60
 
 # Colors
 WHITE = (255, 255, 255)
