@@ -1,7 +1,6 @@
 import pygame
 import constants
 
-from sprites.player import Player
 from sprites.sprite import Sprite
 
 pygame.init()
