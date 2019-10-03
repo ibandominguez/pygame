@@ -14,11 +14,12 @@ class Sprite(pygame.sprite.Sprite):
         self.animation = []
         self.start_frame = time.time()
         self.total_frames = frames_count
-        self.frames_per_second = 300
+        self.frames_per_second = 10
         self.setup_animations(width, height)
 
     def set_animation_speed(self, speed):
         self.frames_per_second = speed
+        return self
 
     def setup_animations(self, width, height):
         for i in range(self.total_frames):
