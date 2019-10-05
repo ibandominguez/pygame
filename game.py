@@ -5,8 +5,14 @@ from sprite import Sprite
 
 pygame.init()
 pygame.display.set_caption(constants.TITLE)
-screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT)) # pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-screen.fill(constants.BLACK)
+
+"""
+Specific size: pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
+Full screen: pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+Monitor size: pygame.display.set_mode((monitor.current_w, monitor.current_h))
+"""
+monitor = pygame.display.Info()
+screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 clock = pygame.time.Clock()
 rpm = 0
 running = True
