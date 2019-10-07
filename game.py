@@ -42,12 +42,14 @@ while running:
     """
     Game Logic, based on timing and playing
     """
-    if game_controller.is_standing_by():
-        pass
+    if game_controller.is_standing_by() and int(rpm) > 0:
+        game_controller.start()
     elif game_controller.is_playing():
         pass
     elif game_controller.is_resuming():
         pass
+    elif game_controller.is_finished():
+        game_controller.end()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

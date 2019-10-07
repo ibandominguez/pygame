@@ -13,9 +13,12 @@ class Controller():
         if self.started_at == None:
             self.started_at = time.time()
 
+    def end(self):
+        self.started_at = None
+
     def get_time(self):
         if self.started_at != None:
-            return int(time.time() - controller.started_at)
+            return int(time.time() - self.started_at)
         return None
 
     def is_playing(self):
@@ -26,3 +29,6 @@ class Controller():
 
     def is_standing_by(self):
         return self.started_at == None
+
+    def is_finished(self):
+        return self.get_time() > (self.GAME_DURATION + self.GAME_RESUMING)
