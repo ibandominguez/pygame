@@ -32,11 +32,12 @@ donuts = Sprite(file_path='assets/donuts.png', width=135, height=240, x=constant
 sprites = pygame.sprite.Group()
 sprites.add(road, bike, donuts)
 
+
 while running:
     clock.tick(constants.FPS)
 
     if rpm > 200: rpm = 0
-    else: rpm += 0.5
+    else: rpm += 1
 
     """
     Game Logic, based on timing and playing
@@ -58,9 +59,11 @@ while running:
     sprites.update()
     screen.fill((73, 61, 116))
     screen.blit(background, ((constants.WIDTH / 2) - 216, 0))
-    screen.blit(debug_text.render(str(rpm), False, (0, 0, 0)), (15, 15))
+    screen.blit(debug_text.render("RPM: {}".format(rpm), False, (0, 0, 0)), (15, 15))
+    screen.blit(debug_text.render("TIME: {}".format(game_controller.get_time()), False, (0, 0, 0)), (15, 45))
 
     sprites.draw(screen)
     pygame.display.flip()
+
 
 pygame.quit()
