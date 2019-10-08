@@ -16,7 +16,7 @@ Monitor size: pygame.display.set_mode((monitor.current_w, monitor.current_h))
 monitor = pygame.display.Info()
 screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 clock = pygame.time.Clock()
-rpm = 1
+rpm = 0
 running = True
 game_controller = Controller()
 

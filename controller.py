@@ -19,7 +19,7 @@ class Controller():
     def get_time(self):
         if self.started_at != None:
             return int(time.time() - self.started_at)
-        return None
+        return 0
 
     def is_playing(self):
         return self.started_at != None and self.get_time() > 0 and self.get_time() < self.GAME_DURATION
