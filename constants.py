@@ -2,7 +2,7 @@
 TITLE = 'Siente la energia'
 WIDTH = 600
 HEIGHT = 550
-FPS = 24
+FPS = 60
 
 # Colors
 WHITE = (255, 255, 255)

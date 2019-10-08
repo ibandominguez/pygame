@@ -10,12 +10,17 @@ class Sprite(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.sheet, (width, height))
         self.rect = self.image.get_rect()
         self.rect.centerx = x  # center of rectangle
-        self.rect.bottom = y  #pixels up from the bottom
+        self.rect.bottom = y  # pixels up from the bottom
         self.animation = []
-        self.start_frame = time.time()
         self.total_frames = frames_count
-        self.frames_per_second = 10
+        self.time_ref = time.time()
+        self.milis_counter = 0
+        self.current_animation_index = 0
+        self.frames_per_second = 100
         self.setup_animations(width, height)
+
+    def get_milis(self):
+        return time.time() * 1000
 
     def set_animation_speed(self, speed):
         self.frames_per_second = speed
@@ -32,5 +37,16 @@ class Sprite(pygame.sprite.Sprite):
         return image
 
     def update(self):
-        animation_index = int((time.time() - self.start_frame) * self.frames_per_second % self.total_frames)
-        self.image = self.animation[animation_index]
+        if self.frames_per_second == 0:
+            self.image = self.animation[0]
+            return
+
+        if self.milis_counter > (1000 / self.frames_per_second):
+            if self.current_animation_index >= len(self.animation) - 1: self.current_animation_index = 0
+            else: self.current_animation_index += 1
+            self.milis_counter = 0
+        else:
+            self.milis_counter += self.get_milis() - self.time_ref
+
+        self.time_ref = self.get_milis()
+        self.image = self.animation[self.current_animation_index]

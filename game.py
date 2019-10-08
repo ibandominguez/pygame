@@ -16,7 +16,7 @@ Monitor size: pygame.display.set_mode((monitor.current_w, monitor.current_h))
 monitor = pygame.display.Info()
 screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 clock = pygame.time.Clock()
-rpm = 0
+rpm = 1
 running = True
 game_controller = Controller()
 
@@ -32,13 +32,22 @@ donuts = Sprite(file_path='assets/donuts.png', width=135, height=240, x=constant
 sprites = pygame.sprite.Group()
 sprites.add(road, bike, donuts)
 
-print(pygame.font.get_fonts())
 
 while running:
-    clock.tick(constants.FPS)
+    # clock.tick(constants.FPS)
 
-    if rpm > 200: rpm = 0
-    else: rpm += 1
+    """
+    RPM simulation
+    """
+    # if rpm > 200: rpm = 0
+    # else: rpm += 1
+
+    """
+    KeyControl
+    """
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP] and rpm < 100: rpm += 1
+    if keys[pygame.K_DOWN] and rpm > 0: rpm -= 1
 
     """
     Game Logic, based on timing and playing
@@ -59,12 +68,12 @@ while running:
     road.set_animation_speed(int(rpm))
     bike.set_animation_speed(int(rpm))
 
-    sprites.update()
     screen.fill((73, 61, 116))
     screen.blit(background, ((constants.WIDTH / 2) - 216, 0))
     screen.blit(debug_text.render("RPM: {}".format(rpm), False, (0, 0, 0)), (15, 15))
     screen.blit(debug_text.render("TIME: {}".format(game_controller.get_time()), False, (0, 0, 0)), (15, 45))
 
+    sprites.update()
     sprites.draw(screen)
     pygame.display.flip()
 
