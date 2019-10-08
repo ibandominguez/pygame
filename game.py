@@ -32,6 +32,7 @@ donuts = Sprite(file_path='assets/donuts.png', width=135, height=240, x=constant
 sprites = pygame.sprite.Group()
 sprites.add(road, bike, donuts)
 
+print(pygame.font.get_fonts())
 
 while running:
     clock.tick(constants.FPS)
