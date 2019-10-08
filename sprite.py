@@ -13,7 +13,7 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.bottom = y # pixels up from the bottom
         self.animation = []
         self.total_frames = frames_count
-        self.time_ref = time.time()
+        self.time_ref = self.get_milis()
         self.milis_counter = 0
         self.current_animation_index = 0
         self.frames_per_second = 100
