@@ -9,8 +9,8 @@ class Sprite(pygame.sprite.Sprite):
         self.sheet = pygame.image.load(file_path).convert_alpha()
         self.image = pygame.transform.scale(self.sheet, (width, height))
         self.rect = self.image.get_rect()
-        self.rect.centerx = x  # center of rectangle
-        self.rect.bottom = y  # pixels up from the bottom
+        self.rect.centerx = x # center of rectangle
+        self.rect.bottom = y # pixels up from the bottom
         self.animation = []
         self.total_frames = frames_count
         self.time_ref = time.time()

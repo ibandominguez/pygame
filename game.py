@@ -25,7 +25,7 @@ Graphics, texts, sprites
 """
 background = pygame.image.load('./assets/background.png')
 debug_text = pygame.font.SysFont('Roboto', 30)
-road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=550, frames_count=35).set_animation_speed(35)
+road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=550, frames_count=34).set_animation_speed(35)
 bike = Sprite(file_path='./assets/bike.png', width=135, height=115, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=25)
 donuts = Sprite(file_path='./assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50).set_animation_speed(35)
 
@@ -52,7 +52,7 @@ while running:
     """
     Game Logic, based on timing and playing
     """
-    if game_controller.is_standing_by() and int(rpm) > 0:
+    if game_controller.is_standing_by() and rpm > 0:
         game_controller.start()
     elif game_controller.is_playing():
         pass
@@ -65,8 +65,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    road.set_animation_speed(int(rpm))
-    bike.set_animation_speed(int(rpm))
+    road.set_animation_speed(rpm)
+    bike.set_animation_speed(rpm)
 
     screen.fill((73, 61, 116))
     screen.blit(background, ((constants.WIDTH / 2) - 216, 0))
