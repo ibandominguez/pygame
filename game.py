@@ -23,11 +23,11 @@ game_controller = Controller()
 """
 Graphics, texts, sprites
 """
-background = pygame.image.load('assets/background.png')
+background = pygame.image.load('./assets/background.png')
 debug_text = pygame.font.SysFont('Roboto', 30)
-road = Sprite(file_path='assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=550, frames_count=35).set_animation_speed(35)
-bike = Sprite(file_path='assets/bike.png', width=135, height=115, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=25)
-donuts = Sprite(file_path='assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50).set_animation_speed(35)
+road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=550, frames_count=35).set_animation_speed(35)
+bike = Sprite(file_path='./assets/bike.png', width=135, height=115, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=25)
+donuts = Sprite(file_path='./assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50).set_animation_speed(35)
 
 sprites = pygame.sprite.Group()
 sprites.add(road, bike, donuts)
