@@ -23,7 +23,7 @@ game_controller = Controller()
 """
 Graphics, texts, sprites
 """
-background = pygame.image.load('./assets/background.png')
+background = pygame.image.load('./assets/background.png').convert_alpha()
 debug_text = pygame.font.SysFont('Roboto', 30)
 road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=550, frames_count=34).set_animation_speed(35)
 bike = Sprite(file_path='./assets/bike.png', width=135, height=115, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=25)
@@ -34,7 +34,7 @@ sprites.add(road, bike, donuts)
 
 
 while running:
-    # clock.tick(constants.FPS)
+    clock.tick(constants.FPS)
 
     """
     RPM simulation
