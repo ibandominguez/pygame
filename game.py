@@ -39,6 +39,7 @@ def calculate(channel):
     counter = counter + 1
     end = time.time()
     rpm = int((1.0 / (end - start)) * 60.0)
+    rpm = rpm if rpm <= 500 else 500
     start = time.time()
 
 try:
@@ -64,7 +65,7 @@ donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=constants.WI
 scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
 
 sprites = pygame.sprite.Group()
-sprites.add(road, bike, donuts)
+sprites.add(donuts, bike, road) # (road, bike, donuts)
 
 while running:
     clock.tick(constants.FPS)
