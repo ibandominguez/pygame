@@ -64,9 +64,8 @@ donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=135, height=
 scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
 
 sprites = pygame.sprite.Group()
-sprites.add(road)
-sprites.add(bike)
-sprites.add(donuts)
+if os.uname()[4][:3] == 'arm': sprites.add(donuts, bike, road) # rpi
+else: sprites.add(road, bike, donuts) # Laptod
 
 while running:
     clock.tick(constants.FPS)
