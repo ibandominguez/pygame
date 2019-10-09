@@ -26,7 +26,7 @@ Graphics, texts, sprites
 background = pygame.image.load('./assets/background.png').convert_alpha()
 debug_text = pygame.font.SysFont('Roboto', 30)
 road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=550, frames_count=34).set_animation_speed(35)
-bike = Sprite(file_path='./assets/bike.png', width=135, height=115, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=25)
+bike = Sprite(file_path='./assets/bike.png', width=108, height=192, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
 donuts = Sprite(file_path='./assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50).set_animation_speed(35)
 
 sprites = pygame.sprite.Group()
@@ -35,12 +35,6 @@ sprites.add(road, bike, donuts)
 
 while running:
     clock.tick(constants.FPS)
-
-    """
-    RPM simulation
-    """
-    # if rpm > 200: rpm = 0
-    # else: rpm += 1
 
     """
     KeyControl
@@ -57,14 +51,22 @@ while running:
     elif game_controller.is_playing():
         pass
     elif game_controller.is_resuming():
-        pass
+        if rpm > 0: rpm -= 10
     elif game_controller.is_finished():
+        rpm = 0
         game_controller.end()
 
+    """
+    Handle Pygame Events
+    """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
+    """
+    Screen updates
+    Sprites actions
+    """
     road.set_animation_speed(rpm)
     bike.set_animation_speed(rpm)
 
@@ -72,6 +74,7 @@ while running:
     screen.blit(background, ((constants.WIDTH / 2) - 216, 0))
     screen.blit(debug_text.render("RPM: {}".format(rpm), False, (0, 0, 0)), (15, 15))
     screen.blit(debug_text.render("TIME: {}".format(game_controller.get_time()), False, (0, 0, 0)), (15, 45))
+    screen.blit(debug_text.render("GAME: {}".format(game_controller.get_state()), False, (0, 0, 0)), (15, 75))
 
     sprites.update()
     sprites.draw(screen)
