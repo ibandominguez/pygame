@@ -30,6 +30,7 @@ debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 20)
 road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=495, frames_count=34)
 bike = Sprite(file_path='./assets/bike.png', width=108, height=192, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
 donuts = Sprite(file_path='./assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
+scoreboard = pygame.image.load('./assets/scoreboard.png').convert_alpha()
 
 sprites = pygame.sprite.Group()
 sprites.add(road, bike, donuts)
@@ -85,6 +86,16 @@ while running:
     screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, 150))
     screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 198))
     screen.blit(debug_text.render(str(game_controller.GAME_DURATION - game_controller.get_time()) if game_controller.is_playing() else game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 198))
+
+    if game_controller.is_resuming():
+        scoreboard_pos = ((constants.WIDTH / 2) - (scoreboard.get_rect().size[0] / 2), constants.HEIGHT + 15 - scoreboard.get_rect().size[1])
+        screen.blit(scoreboard, scoreboard_pos)
+        screen.blit(debug_text.render("[==> Enhorabuena! 75 donuts en 0,5 kms! <==]", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 20))
+        screen.blit(debug_text.render("# 1: 525 Donuts y 1,3 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 60))
+        screen.blit(debug_text.render("# 2: 425 Donuts y 1,2 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 90))
+        screen.blit(debug_text.render("# 3: 325 Donuts y 1,1 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 120))
+        screen.blit(debug_text.render("# 4: 225 Donuts y 1,0 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 150))
+        screen.blit(debug_text.render("# 5: 125 Donuts y 0,9 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 180))
 
     sprites.update()
     sprites.draw(screen)
