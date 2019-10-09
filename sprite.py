@@ -56,4 +56,4 @@ class Sprite(pygame.sprite.Sprite):
             self.milis_counter += self.get_milis() - self.time_ref
 
         self.time_ref = self.get_milis()
-        self.image = self.animation[self.current_animation_index]
+        if self.current_animation_index < len(self.animation): self.image = self.animation[self.current_animation_index]
