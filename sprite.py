@@ -42,9 +42,9 @@ class Sprite(pygame.sprite.Sprite):
             return
 
         if self.milis_counter > (1000 / self.frames_per_second):
-            if self.frames_per_second > 50: incrementer = int(self.frames_per_second / 50)
+            if self.frames_per_second > 30: incrementer = int(self.frames_per_second / 30)
             else: incrementer = 1
-            if self.current_animation_index + incrementer >= len(self.animation) - 1: self.current_animation_index = 0
+            if self.current_animation_index + incrementer >= len(self.animation) - 1: self.current_animation_index = (self.current_animation_index + incrementer) - len(self.animation) - 1
             else: self.current_animation_index += incrementer
             self.milis_counter = 0
         else:
