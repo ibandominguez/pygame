@@ -35,6 +35,6 @@ class Controller():
 
     def get_state(self):
         if self.is_playing(): return 'Playing'
-        if self.is_resuming(): return 'Resuming'
-        if self.is_standing_by(): return 'StandingBy'
+        if self.is_resuming(): return 'Credits'
+        if self.is_standing_by(): return 'Waiting'
         if self.is_finished(): return 'Finished'

@@ -18,16 +18,18 @@ screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 clock = pygame.time.Clock()
 rpm = 0
 running = True
+show_donuts_ticks = 0
 game_controller = Controller()
 
 """
 Graphics, texts, sprites
 """
+sign = pygame.image.load('./assets/sign.png').convert_alpha()
 background = pygame.image.load('./assets/background.png').convert_alpha()
-debug_text = pygame.font.SysFont('Roboto', 30)
-road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=495, frames_count=34).set_animation_speed(35)
+debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 20)
+road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=495, frames_count=34)
 bike = Sprite(file_path='./assets/bike.png', width=108, height=192, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
-donuts = Sprite(file_path='./assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50).set_animation_speed(35)
+donuts = Sprite(file_path='./assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
 
 sprites = pygame.sprite.Group()
 sprites.add(road, bike, donuts)
@@ -49,12 +51,19 @@ while running:
     if game_controller.is_standing_by() and rpm > 0:
         game_controller.start()
     elif game_controller.is_playing():
-        pass
+        if game_controller.get_time() % 10 == 0: show_donuts_ticks += 5
+        if show_donuts_ticks > 0:
+            donuts.set_animation_speed(35)
+            show_donuts_ticks -= 1
+        else:
+            donuts.set_animation_speed(0)
     elif game_controller.is_resuming():
         if rpm > 0: rpm -= 1
     elif game_controller.is_finished():
         rpm = 0
         game_controller.end()
+        donuts.set_animation_speed(0)
+        show_donuts_ticks = 0
 
     """
     Handle Pygame Events
@@ -72,9 +81,10 @@ while running:
 
     screen.fill((73, 61, 116))
     screen.blit(background, ((constants.WIDTH / 2) - 244, 0))
-    screen.blit(debug_text.render("RPM: {}".format(rpm), False, (0, 0, 0)), (15, 15))
-    screen.blit(debug_text.render("TIME: {}".format(game_controller.get_time()), False, (0, 0, 0)), (15, 45))
-    screen.blit(debug_text.render("GAME: {}".format(game_controller.get_state()), False, (0, 0, 0)), (15, 75))
+    screen.blit(sign, (0, 150))
+    screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, 150))
+    screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 198))
+    screen.blit(debug_text.render(str(game_controller.GAME_DURATION - game_controller.get_time()) if game_controller.is_playing() else game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 198))
 
     sprites.update()
     sprites.draw(screen)

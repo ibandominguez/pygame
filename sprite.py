@@ -16,7 +16,7 @@ class Sprite(pygame.sprite.Sprite):
         self.time_ref = self.get_milis()
         self.milis_counter = 0
         self.current_animation_index = 0
-        self.frames_per_second = 100
+        self.frames_per_second = 0
         self.setup_animations(width, height)
 
     def get_milis(self):
