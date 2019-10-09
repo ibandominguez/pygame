@@ -1,4 +1,5 @@
 import os
+import time
 import pygame
 import constants
 
@@ -14,6 +15,9 @@ Specific size: pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 Full screen: pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 Monitor size: pygame.display.set_mode((monitor.current_w, monitor.current_h))
 """
+counter = 0
+start = 0
+end = 0
 monitor = pygame.display.Info()
 screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 clock = pygame.time.Clock()
@@ -21,6 +25,32 @@ rpm = 0
 running = True
 show_donuts_ticks = 0
 game_controller = Controller()
+
+"""
+Sensor setup
+Only in RPI
+"""
+def calculate(channel):
+    global counter
+    global rpm
+    global start
+    global end
+
+    counter = counter + 1
+    end = time.time()
+    rpm = int((1.0 / (end - start)) * 60.0)
+    start = time.time()
+
+try:
+    import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(2, GPIO.IN)
+    GPIO.setup(3, GPIO.OUT)
+    GPIO.output(3, False)
+    GPIO.add_event_detect(2, GPIO.RISING, callback=calculate, bouncetime=30)
+except Exception as e:
+    print('RPI module not found, Sensor not initialized')
 
 """
 Graphics, texts, sprites
