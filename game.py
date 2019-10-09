@@ -64,7 +64,7 @@ donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=135, height=
 scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
 
 sprites = pygame.sprite.Group()
-sprites.add(road, bike, donuts)
+sprites.add(donuts, bike, road) # (road, bike, donuts)
 
 while running:
     clock.tick(constants.FPS)
