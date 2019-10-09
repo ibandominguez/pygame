@@ -1,3 +1,4 @@
+import os
 import pygame
 import constants
 
@@ -24,13 +25,13 @@ game_controller = Controller()
 """
 Graphics, texts, sprites
 """
-sign = pygame.image.load('./assets/sign.png').convert_alpha()
-background = pygame.image.load('./assets/background.png').convert_alpha()
+sign = pygame.image.load(os.getcwd() + '/assets/sign.png').convert_alpha()
+background = pygame.image.load(os.getcwd() + '/assets/background.png').convert_alpha()
 debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 20)
-road = Sprite(file_path='./assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=495, frames_count=34)
-bike = Sprite(file_path='./assets/bike.png', width=108, height=192, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
-donuts = Sprite(file_path='./assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
-scoreboard = pygame.image.load('./assets/scoreboard.png').convert_alpha()
+road = Sprite(file_path=os.getcwd() + '/assets/road.png', width=270, height=480, x=constants.WIDTH / 2, y=495, frames_count=34)
+bike = Sprite(file_path=os.getcwd() + '/assets/bike.png', width=108, height=192, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
+donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=135, height=240, x=constants.WIDTH / 2, y=constants.HEIGHT, frames_count=50)
+scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
 
 sprites = pygame.sprite.Group()
 sprites.add(road, bike, donuts)
