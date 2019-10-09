@@ -3,8 +3,8 @@ import time
 
 class Controller():
 
-    GAME_DURATION = 15
-    GAME_RESUMING = 5
+    GAME_DURATION = 45
+    GAME_RESUMING = 15
 
     def __init__(self):
         self.started_at = None
