@@ -60,11 +60,11 @@ while running:
             donuts.set_animation_speed(0)
     elif game_controller.is_resuming():
         if rpm > 0: rpm -= 1
+        donuts.set_animation_speed(0)
+        show_donuts_ticks = 0
     elif game_controller.is_finished():
         rpm = 0
         game_controller.end()
-        donuts.set_animation_speed(0)
-        show_donuts_ticks = 0
 
     """
     Handle Pygame Events
@@ -87,6 +87,9 @@ while running:
     screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 198))
     screen.blit(debug_text.render(str(game_controller.GAME_DURATION - game_controller.get_time()) if game_controller.is_playing() else game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 198))
 
+    sprites.update()
+    sprites.draw(screen)
+
     if game_controller.is_resuming():
         scoreboard_pos = ((constants.WIDTH / 2) - (scoreboard.get_rect().size[0] / 2), constants.HEIGHT + 15 - scoreboard.get_rect().size[1])
         screen.blit(scoreboard, scoreboard_pos)
@@ -97,8 +100,6 @@ while running:
         screen.blit(debug_text.render("# 4: 225 Donuts y 1,0 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 150))
         screen.blit(debug_text.render("# 5: 125 Donuts y 0,9 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 180))
 
-    sprites.update()
-    sprites.draw(screen)
     pygame.display.flip()
 
 
