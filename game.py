@@ -113,10 +113,10 @@ while running:
 
     screen.fill((73, 61, 116))
     screen.blit(background, (0, 0))
-    screen.blit(sign, (0, 150))
-    screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, 150))
-    screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 198))
-    screen.blit(debug_text.render(str(game_controller.GAME_DURATION - game_controller.get_time()) if game_controller.is_playing() else game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 198))
+    screen.blit(sign, (0, 250))
+    screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, 250))
+    screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 298))
+    screen.blit(debug_text.render(str(game_controller.GAME_DURATION - game_controller.get_time()) if game_controller.is_playing() else game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 298))
 
     sprites.update()
     sprites.draw(screen)
