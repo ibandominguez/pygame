@@ -65,7 +65,7 @@ donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=constants.WI
 scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
 
 sprites = pygame.sprite.Group()
-sprites.add(donuts, bike, road) # (road, bike, donuts)
+sprites.add(road, bike, donuts)
 
 while running:
     clock.tick(constants.FPS)
@@ -108,15 +108,15 @@ while running:
     Screen updates
     Sprites actions
     """
-    road.set_animation_speed(rpm)
-    bike.set_animation_speed(rpm)
-
     screen.fill((73, 61, 116))
     screen.blit(background, (0, 0))
     screen.blit(sign, (0, 250))
     screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, 250))
     screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 298))
     screen.blit(debug_text.render(str(game_controller.GAME_DURATION - game_controller.get_time()) if game_controller.is_playing() else game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 298))
+
+    road.set_animation_speed(rpm)
+    bike.set_animation_speed(rpm)
 
     sprites.update()
     sprites.draw(screen)
