@@ -64,7 +64,9 @@ donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=135, height=
 scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
 
 sprites = pygame.sprite.Group()
-sprites.add(road, bike, donuts)
+bike_sprites = pygame.sprite.Group()
+sprites.add(bike, donuts)
+bike_sprites.add(bike, donuts)
 
 
 while running:
@@ -120,6 +122,8 @@ while running:
 
     sprites.update()
     sprites.draw(screen)
+    bike_sprites.update()
+    bike_sprites.draw(screen)
 
     if game_controller.is_resuming():
         scoreboard_pos = ((constants.WIDTH / 2) - (scoreboard.get_rect().size[0] / 2), constants.HEIGHT + 15 - scoreboard.get_rect().size[1])
