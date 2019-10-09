@@ -4,15 +4,16 @@ import time
 
 class Sprite(pygame.sprite.Sprite):
 
-    def __init__(self, file_path, width, height, x, y, frames_count):
+    def __init__(self, file_path, width, height, x, y, frames_tile, frames_total):
         pygame.sprite.Sprite.__init__(self)
         self.sheet = pygame.image.load(file_path).convert_alpha()
         self.image = pygame.transform.scale(self.sheet, (width, height))
         self.rect = self.image.get_rect()
-        self.rect.centerx = x # center of rectangle
-        self.rect.bottom = y # pixels up from the bottom
+        self.rect.left = x # left
+        self.rect.top = y # top
         self.animation = []
-        self.total_frames = frames_count
+        self.frames_tile = frames_tile
+        self.frames_total = frames_total
         self.time_ref = self.get_milis()
         self.milis_counter = 0
         self.current_animation_index = 0
@@ -27,8 +28,12 @@ class Sprite(pygame.sprite.Sprite):
         return self
 
     def setup_animations(self, width, height):
-        for i in range(self.total_frames):
-            self.animation.append(self.get_image(width * i, 0, width, height))
+        counter = 0
+        for y in range(self.frames_tile[1]):
+            for x in range(self.frames_tile[0]):
+                if counter < self.frames_total:
+                    self.animation.append(self.get_image(width * x, height * y, width, height))
+                counter += 1
         self.image = self.animation[0]
 
     def get_image(self, x, y, width, height):

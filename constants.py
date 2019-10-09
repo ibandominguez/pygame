@@ -1,7 +1,7 @@
 # Game Config
 TITLE = 'Siente la energia'
-WIDTH = 488
-HEIGHT = 550
+WIDTH = int(1080 * 0.5)
+HEIGHT = int(1920 * 0.5)
 FPS = 100
 
 # Colors
