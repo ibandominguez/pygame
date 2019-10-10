@@ -56,9 +56,13 @@ except Exception as e:
     print('RPI module not found, Sensor not initialized')
 
 """ Sprite Sheets """
+intro = Sprite(file_path=os.getcwd() + '/assets/intro.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 20), frames_total=100).set_animation_speed(60)
 road = Sprite(file_path=os.getcwd() + '/assets/road.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(17, 2), frames_total=34)
 bike = Sprite(file_path=os.getcwd() + '/assets/bike.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
 donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
+
+intro_sprites = pygame.sprite.OrderedUpdates()
+intro_sprites.add(intro)
 
 sprites = pygame.sprite.OrderedUpdates()
 sprites.add(road, bike, donuts)
@@ -66,11 +70,12 @@ sprites.add(road, bike, donuts)
 """ Images """
 background = pygame.image.load(os.getcwd() + '/assets/background.png').convert_alpha()
 sign = pygame.image.load(os.getcwd() + '/assets/sign.png').convert_alpha()
-scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
+resuming = pygame.image.load(os.getcwd() + '/assets/resuming.png').convert_alpha()
 
 """ Text """
 countdown_text = pygame.font.SysFont(pygame.font.get_default_font(), 80)
 debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 20)
+resuming_text = pygame.font.SysFont(pygame.font.get_default_font(), 60)
 
 
 while running:
@@ -86,20 +91,55 @@ while running:
     """
     Game Logic, based on timing and playing
     """
-    if game_controller.is_standing_by() and rpm > 0:
-        game_controller.start()
+    """ Game is standing by """
+    if game_controller.is_standing_by():
+        if rpm > 0: game_controller.start()
+        else:
+            intro_sprites.update()
+            intro_sprites.draw(screen)
+    """ Game is playing """
     elif game_controller.is_playing():
+        # Screen filling
+        screen.fill((73, 61, 116))
+        screen.blit(background, (0, 0))
+        screen.blit(sign, (0, 250))
+        screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, 250))
+        screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 298))
+        screen.blit(debug_text.render(game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 298))
+
+        # Speed updating
+        road.set_animation_speed(rpm)
+        bike.set_animation_speed(rpm)
+
+        # Sprites drawing
+        sprites.update()
+        sprites.draw(screen)
+
+        # Show countdown on game end
+        if game_controller.is_playing() and game_controller.game_duration - game_controller.get_time() <= 5:
+            screen.blit(
+                countdown_text.render(game_controller.get_state(), False, (255, 255, 255)),
+                (constants.WIDTH / 2 - 80, constants.HEIGHT / 2 - 80)
+            )
+
+        # TODO: Donuts logics
         if game_controller.get_time() % 10 == 0: show_donuts_ticks += 5
         if show_donuts_ticks > 0:
             donuts.set_animation_speed(35)
             show_donuts_ticks -= 1
         else:
             donuts.set_animation_speed(0)
+    """ Game is resuming """
     elif game_controller.is_resuming():
-        if rpm > 0: rpm -= 1
+        screen.blit(resuming, (0, 0))
+        screen.blit(
+            resuming_text.render("LOREM IPSUM!", False, (255, 255, 255)),
+            (constants.WIDTH * 0.25, constants.HEIGHT * 0.5)
+        )
+    """ Game is Finished! """
+    elif game_controller.is_finished():
         donuts.set_animation_speed(0)
         show_donuts_ticks = 0
-    elif game_controller.is_finished():
         rpm = 0
         game_controller.end()
 
@@ -109,45 +149,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    """
-    Screen updates
-    Sprites actions
-    """
-    screen.fill((73, 61, 116))
-    screen.blit(background, (0, 0))
-    screen.blit(sign, (0, 250))
-    screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, 250))
-    screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 298))
-    screen.blit(debug_text.render(game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 298))
-
-    road.set_animation_speed(rpm)
-    bike.set_animation_speed(rpm)
-
-    sprites.update()
-    sprites.draw(screen)
-
-    # Show countdown on game end
-    if game_controller.is_playing() and game_controller.game_duration - game_controller.get_time() <= 5:
-        screen.blit(
-            countdown_text.render(
-                game_controller.get_state(),
-                False, (255, 255, 255)
-            ), (
-                constants.WIDTH / 2 - 80, constants.HEIGHT / 2 - 80
-            )
-        )
-
-    # Show resuming panel
-    if game_controller.is_resuming():
-        scoreboard_pos = ((constants.WIDTH / 2) - (scoreboard.get_rect().size[0] / 2), constants.HEIGHT + 15 - scoreboard.get_rect().size[1])
-        screen.blit(scoreboard, scoreboard_pos)
-        screen.blit(debug_text.render("[==> Enhorabuena! 75 donuts en 0,5 kms! <==]", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 20))
-        screen.blit(debug_text.render("# 1: 525 Donuts y 1,3 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 60))
-        screen.blit(debug_text.render("# 2: 425 Donuts y 1,2 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 90))
-        screen.blit(debug_text.render("# 3: 325 Donuts y 1,1 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 120))
-        screen.blit(debug_text.render("# 4: 225 Donuts y 1,0 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 150))
-        screen.blit(debug_text.render("# 5: 125 Donuts y 0,9 kms recorridos!", False, (255, 185, 8)), (scoreboard_pos[0] + 20, scoreboard_pos[1] + 180))
 
     pygame.display.flip()
 
