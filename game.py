@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 rpm = 0
 running = True
 show_donuts_ticks = 0
-game_controller = Controller()
+game_controller = Controller(game_duration=constants.GAME_DURATION, game_resuming=constants.GAME_RESUMING)
 
 """
 Sensor setup
@@ -53,19 +53,22 @@ try:
 except Exception as e:
     print('RPI module not found, Sensor not initialized')
 
-"""
-Graphics, texts, sprites
-"""
-sign = pygame.image.load(os.getcwd() + '/assets/sign.png').convert_alpha()
-background = pygame.image.load(os.getcwd() + '/assets/background.png').convert_alpha()
-debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 20)
+""" Sprite Sheets """
 road = Sprite(file_path=os.getcwd() + '/assets/road.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(17, 2), frames_total=34)
 bike = Sprite(file_path=os.getcwd() + '/assets/bike.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
 donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
-scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
 
 sprites = pygame.sprite.OrderedUpdates()
 sprites.add(road, bike, donuts)
+
+""" Images """
+background = pygame.image.load(os.getcwd() + '/assets/background.png').convert_alpha()
+sign = pygame.image.load(os.getcwd() + '/assets/sign.png').convert_alpha()
+scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
+
+""" Text """
+debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 20)
+
 
 while running:
     clock.tick(constants.FPS)
@@ -113,7 +116,7 @@ while running:
     screen.blit(sign, (0, 250))
     screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, 250))
     screen.blit(debug_text.render("{} rpm".format(rpm), False, pygame.Color('white')), (60, 298))
-    screen.blit(debug_text.render(str(game_controller.GAME_DURATION - game_controller.get_time()) if game_controller.is_playing() else game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 298))
+    screen.blit(debug_text.render(game_controller.get_state(), False, pygame.Color('white')), (constants.WIDTH - 100, 298))
 
     road.set_animation_speed(rpm)
     bike.set_animation_speed(rpm)
