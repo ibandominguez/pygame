@@ -7,6 +7,7 @@ class Controller():
         self.game_duration = game_duration
         self.game_resuming = game_resuming
         self.started_at = None
+        self.time_ref = time.time()
         self.time_counter = 0
 
     def start(self):
@@ -20,6 +21,15 @@ class Controller():
         if self.started_at != None:
             return int(time.time() - self.started_at)
         return 0
+
+    def every_seconds(self, seconds):
+        if time.time() - self.time_ref > seconds:
+            self.time_ref = time.time()
+            self.time_counter = 0
+            return True
+        else:
+            self.time_counter += time.time() - self.time_ref
+            return False
 
     def is_playing(self):
         return self.started_at != None and self.get_time() > 0 and self.get_time() < self.game_duration
