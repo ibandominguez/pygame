@@ -69,6 +69,7 @@ sign = pygame.image.load(os.getcwd() + '/assets/sign.png').convert_alpha()
 scoreboard = pygame.image.load(os.getcwd() + '/assets/scoreboard.png').convert_alpha()
 
 """ Text """
+countdown_text = pygame.font.SysFont(pygame.font.get_default_font(), 80)
 debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 20)
 
 
@@ -126,6 +127,18 @@ while running:
     sprites.update()
     sprites.draw(screen)
 
+    # Show countdown on game end
+    if game_controller.is_playing() and game_controller.game_duration - game_controller.get_time() <= 5:
+        screen.blit(
+            countdown_text.render(
+                game_controller.get_state(),
+                False, (255, 255, 255)
+            ), (
+                constants.WIDTH / 2 - 80, constants.HEIGHT / 2 - 80
+            )
+        )
+
+    # Show resuming panel
     if game_controller.is_resuming():
         scoreboard_pos = ((constants.WIDTH / 2) - (scoreboard.get_rect().size[0] / 2), constants.HEIGHT + 15 - scoreboard.get_rect().size[1])
         screen.blit(scoreboard, scoreboard_pos)
