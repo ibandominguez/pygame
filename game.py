@@ -7,7 +7,7 @@ import pygame
 import constants
 
 from controller import Controller
-from sprite import Sprite
+from sprite import Sprite, FrameSprite
 
 pygame.init()
 pygame.font.init()
@@ -65,13 +65,17 @@ except Exception as e:
     print('RPI module not found, Sensor not initialized')
 
 """ Sprite Sheets """
-intro = Sprite(file_path=os.getcwd() + '/assets/intro.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(6, 12), frames_total=72).set_animation_speed(1)
-road = Sprite(file_path=os.getcwd() + '/assets/road.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(17, 2), frames_total=34)
-bike = Sprite(file_path=os.getcwd() + '/assets/bike.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
-donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
+# intro = Sprite(file_path=os.getcwd() + '/assets/intro.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(6, 12), frames_total=72).set_animation_speed(1)
+# road = Sprite(file_path=os.getcwd() + '/assets/road.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(17, 2), frames_total=34)
+# bike = Sprite(file_path=os.getcwd() + '/assets/bike.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
+# donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
+#intro = FrameSprite(directory=os.getcwd() + '/pre-assets/intro', width=constants.WIDTH, height=constants.HEIGHT, total_frames=72).set_animation_speed(1)
+road = FrameSprite(directory=os.getcwd() + '/pre-assets/road', width=constants.WIDTH, height=constants.HEIGHT, total_frames=34)
+bike = FrameSprite(directory=os.getcwd() + '/pre-assets/bike', width=constants.WIDTH, height=constants.HEIGHT, total_frames=50)
+donuts = FrameSprite(directory=os.getcwd() + '/pre-assets/donuts', width=constants.WIDTH, height=constants.HEIGHT, total_frames=50)
 
 intro_sprites = pygame.sprite.OrderedUpdates()
-intro_sprites.add(intro)
+#intro_sprites.add(intro)
 
 sprites = pygame.sprite.OrderedUpdates()
 sprites.add(road, bike, donuts)
@@ -89,6 +93,13 @@ resuming_text = pygame.font.SysFont(pygame.font.get_default_font(), 60)
 
 while running:
     clock.tick(constants.FPS)
+
+    """
+    Handle Pygame Events
+    """
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
     """
     KeyControl
@@ -160,13 +171,6 @@ while running:
         donuts_delivered = 0
         donuts.set_animation_speed(0)
         game_controller.end()
-
-    """
-    Handle Pygame Events
-    """
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
 
     pygame.display.flip()
 
