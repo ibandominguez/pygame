@@ -7,7 +7,7 @@ import pygame
 import constants
 
 from controller import Controller
-from sprite import Sprite, FrameSprite
+from sprite import Sprite
 
 pygame.init()
 pygame.font.init()
@@ -22,11 +22,13 @@ if constants.FULLSCREEN:
     monitor = pygame.display.Info()
     constants.WIDTH = monitor.current_w
     constants.HEIGHT = monitor.current_h
+    screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.FULLSCREEN)
+else:
+    screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 
 counter = 0
 start = 0
 end = 0
-screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 clock = pygame.time.Clock()
 rpm = 0
 meters = 0
@@ -37,6 +39,9 @@ show_donuts_ticks = 0
 donuts_delivered = 0
 game_controller = Controller(game_duration=constants.GAME_DURATION, game_resuming=constants.GAME_RESUMING)
 
+"""
+Scaled image helper
+"""
 def get_image_scaled(path, width, height):
     img = pygame.image.load(path).convert_alpha()
     return pygame.transform.scale(img, (width, height))
@@ -69,10 +74,10 @@ except Exception as e:
     print('RPI module not found, Sensor not initialized')
 
 """ Sprite Sheets """
-intro = FrameSprite(directory=os.getcwd() + '/pre-assets/intro', width=constants.WIDTH, height=constants.HEIGHT, total_frames=72).set_animation_speed(35)
-road = FrameSprite(directory=os.getcwd() + '/pre-assets/road', width=constants.WIDTH, height=constants.HEIGHT, total_frames=34)
-bike = FrameSprite(directory=os.getcwd() + '/pre-assets/bike', width=constants.WIDTH, height=constants.HEIGHT, total_frames=50)
-donuts = FrameSprite(directory=os.getcwd() + '/pre-assets/donuts', width=constants.WIDTH, height=constants.HEIGHT, total_frames=50)
+intro = Sprite(directory=os.getcwd() + '/assets/intro', width=constants.WIDTH, height=constants.HEIGHT, total_frames=72).set_animation_speed(35)
+road = Sprite(directory=os.getcwd() + '/assets/road', width=constants.WIDTH, height=constants.HEIGHT, total_frames=34)
+bike = Sprite(directory=os.getcwd() + '/assets/bike', width=constants.WIDTH, height=constants.HEIGHT, total_frames=50)
+donuts = Sprite(directory=os.getcwd() + '/assets/donuts', width=constants.WIDTH, height=constants.HEIGHT, total_frames=50)
 
 intro_sprites = pygame.sprite.OrderedUpdates()
 intro_sprites.add(intro)
