@@ -33,6 +33,10 @@ show_donuts_ticks = 0
 donuts_delivered = 0
 game_controller = Controller(game_duration=constants.GAME_DURATION, game_resuming=constants.GAME_RESUMING)
 
+def get_image_scaled(path, width, height):
+    img = pygame.image.load(path).convert_alpha()
+    return pygame.transform.scale(img, (width, height))
+
 """
 Sensor setup
 Only in RPI
@@ -61,7 +65,7 @@ except Exception as e:
     print('RPI module not found, Sensor not initialized')
 
 """ Sprite Sheets """
-intro = Sprite(file_path=os.getcwd() + '/assets/intro.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(6, 12), frames_total=72).set_animation_speed(30)
+intro = Sprite(file_path=os.getcwd() + '/assets/intro.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(6, 12), frames_total=72).set_animation_speed(1)
 road = Sprite(file_path=os.getcwd() + '/assets/road.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(17, 2), frames_total=34)
 bike = Sprite(file_path=os.getcwd() + '/assets/bike.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
 donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
@@ -73,9 +77,9 @@ sprites = pygame.sprite.OrderedUpdates()
 sprites.add(road, bike, donuts)
 
 """ Images """
-background = pygame.image.load(os.getcwd() + '/assets/background.png').convert_alpha()
+background = get_image_scaled(os.getcwd() + '/assets/background.png', constants.WIDTH, constants.HEIGHT)
 sign = pygame.image.load(os.getcwd() + '/assets/sign.png').convert_alpha()
-resuming = pygame.image.load(os.getcwd() + '/assets/resuming.png').convert_alpha()
+resuming = get_image_scaled(os.getcwd() + '/assets/resuming.png', constants.WIDTH, constants.HEIGHT)
 
 """ Text """
 countdown_text = pygame.font.SysFont(pygame.font.get_default_font(), 100)
