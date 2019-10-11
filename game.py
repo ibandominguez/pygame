@@ -94,7 +94,7 @@ resuming = get_image_scaled(os.getcwd() + '/assets/resuming.png', constants.WIDT
 """ Text """
 countdown_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 120)
 debug_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 18)
-resuming_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 40)
+resuming_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 50)
 score_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 30)
 
 if __name__ == "__main__":
@@ -164,7 +164,7 @@ if __name__ == "__main__":
             if highest_score > 0:
                 screen.blit(
                     score_text.render("1ST - {} DONUTS".format(highest_score), False, (137, 0, 27)),
-                    (constants.WIDTH * 0.28, constants.HEIGHT * 0.15)
+                    (constants.WIDTH * 0.35, constants.HEIGHT * 0.15)
                 )
 
             # Show countdown on game end
@@ -185,7 +185,7 @@ if __name__ == "__main__":
             screen.blit(resuming, (0, 0))
             screen.blit(
                 resuming_text.render(text, False, (137, 0, 27)),
-                (constants.WIDTH * 0.28, constants.HEIGHT * 0.70)
+                (constants.WIDTH * 0.20, constants.HEIGHT * 0.70)
             )
         elif game_controller.is_finished():
             rpm = 0
