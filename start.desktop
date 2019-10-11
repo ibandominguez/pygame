@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Donuts
+Icon=/home/pi/pygame/icon.png
+Type=Application
+Exec=python3 /home/pi/pygame/game.py
