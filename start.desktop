@@ -3,4 +3,4 @@ Encoding=UTF-8
 Name=Donuts
 Icon=/home/pi/pygame/icon.png
 Type=Application
-Exec=python3 /home/pi/pygame/game.py
+Exec=gnome-terminal -x bash -c "cd /home/pi/pygame && python game.py"
