@@ -65,17 +65,17 @@ except Exception as e:
     print('RPI module not found, Sensor not initialized')
 
 """ Sprite Sheets """
-# intro = Sprite(file_path=os.getcwd() + '/assets/intro.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(6, 12), frames_total=72).set_animation_speed(1)
+# intro = Sprite(file_path=os.getcwd() + '/assets/intro.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(6, 12), frames_total=72).set_animation_speed(60)
 # road = Sprite(file_path=os.getcwd() + '/assets/road.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(17, 2), frames_total=34)
 # bike = Sprite(file_path=os.getcwd() + '/assets/bike.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
 # donuts = Sprite(file_path=os.getcwd() + '/assets/donuts.png', width=constants.WIDTH, height=constants.HEIGHT, x=0, y=0, frames_tile=(5, 10), frames_total=50)
-#intro = FrameSprite(directory=os.getcwd() + '/pre-assets/intro', width=constants.WIDTH, height=constants.HEIGHT, total_frames=72).set_animation_speed(1)
+intro = FrameSprite(directory=os.getcwd() + '/pre-assets/intro', width=constants.WIDTH, height=constants.HEIGHT, total_frames=72).set_animation_speed(35)
 road = FrameSprite(directory=os.getcwd() + '/pre-assets/road', width=constants.WIDTH, height=constants.HEIGHT, total_frames=34)
 bike = FrameSprite(directory=os.getcwd() + '/pre-assets/bike', width=constants.WIDTH, height=constants.HEIGHT, total_frames=50)
 donuts = FrameSprite(directory=os.getcwd() + '/pre-assets/donuts', width=constants.WIDTH, height=constants.HEIGHT, total_frames=50)
 
 intro_sprites = pygame.sprite.OrderedUpdates()
-#intro_sprites.add(intro)
+intro_sprites.add(intro)
 
 sprites = pygame.sprite.OrderedUpdates()
 sprites.add(road, bike, donuts)
@@ -139,8 +139,8 @@ while running:
         screen.blit(background, (0, 0))
         screen.blit(sign, (0, constants.HEIGHT * 0.30))
         screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, constants.HEIGHT * 0.30))
-        screen.blit(debug_text.render("{} kmh".format(kmh), False, pygame.Color('white')), (55, constants.HEIGHT * 0.30 + 48))
-        screen.blit(debug_text.render("{} donuts".format(donuts_delivered), False, pygame.Color('white')), (constants.WIDTH - 105, constants.HEIGHT * 0.30 + 48))
+        screen.blit(debug_text.render("{} kmh".format(kmh), False, pygame.Color('white')), (52, constants.HEIGHT * 0.30 + 48))
+        screen.blit(debug_text.render("{} donuts".format(donuts_delivered), False, pygame.Color('white')), (constants.WIDTH - 108, constants.HEIGHT * 0.30 + 48))
 
         # Speed updating
         road.set_animation_speed(rpm)
