@@ -178,7 +178,7 @@ if __name__ == "__main__":
 
             if show_record:
                 highest_score = donuts_delivered
-                text = "RECORD! {} DONUTS".format(donuts_delivered)
+                text = "RECORD!  {} DONUTS".format(donuts_delivered)
             else:
                 text = "        {} DONUTS".format(donuts_delivered)
 
