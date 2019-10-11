@@ -23,7 +23,7 @@ if constants.FULLSCREEN:
     monitor = pygame.display.Info()
     constants.WIDTH = monitor.current_w
     constants.HEIGHT = monitor.current_h
-    screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.FULLSCREEN) 
+    screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.FULLSCREEN)
 else:
     screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 
@@ -105,7 +105,7 @@ while running:
     """
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q or event.key == pygame.K_Q:
+            if event.key == pygame.K_BACKSPACE:
                 running = False
         if event.type == pygame.QUIT:
             running = False
