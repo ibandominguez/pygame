@@ -25,6 +25,7 @@ if constants.FULLSCREEN:
 else:
     screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 
+highest_score = 0
 counter = 0
 start = 0
 end = 0
@@ -36,6 +37,7 @@ kmh = 0
 running = True
 show_donuts_ticks = 0
 donuts_delivered = 0
+show_record = False
 game_controller = Controller(game_duration=constants.GAME_DURATION, game_resuming=constants.GAME_RESUMING)
 
 """
@@ -90,9 +92,10 @@ sign = pygame.image.load(os.getcwd() + '/assets/sign.png').convert_alpha()
 resuming = get_image_scaled(os.getcwd() + '/assets/resuming.png', constants.WIDTH, constants.HEIGHT)
 
 """ Text """
-countdown_text = pygame.font.SysFont(pygame.font.get_default_font(), 100)
-debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 18)
-resuming_text = pygame.font.SysFont(pygame.font.get_default_font(), 60)
+countdown_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 120)
+debug_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 18)
+resuming_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 40)
+score_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 30)
 
 if __name__ == "__main__":
     while running:
@@ -137,7 +140,7 @@ if __name__ == "__main__":
                     donuts_delivered += 10
                     show_donuts_ticks += 5
                 if show_donuts_ticks > 0:
-                    donuts.set_animation_speed(30)
+                    donuts.set_animation_speed(40)
                     show_donuts_ticks -= 1
                 else:
                     donuts.set_animation_speed(0)
@@ -146,8 +149,8 @@ if __name__ == "__main__":
             screen.blit(background, (0, 0))
             screen.blit(sign, (0, constants.HEIGHT * 0.30))
             screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, constants.HEIGHT * 0.30))
-            screen.blit(debug_text.render("{} kmh".format(kmh), False, pygame.Color('white')), (52, constants.HEIGHT * 0.30 + 48))
-            screen.blit(debug_text.render("{} donuts".format(donuts_delivered), False, pygame.Color('white')), (constants.WIDTH - 108, constants.HEIGHT * 0.30 + 48))
+            screen.blit(debug_text.render("{} kmh".format(kmh), False, pygame.Color('white')), (50, constants.HEIGHT * 0.30 + 45))
+            screen.blit(debug_text.render("{} donuts".format(donuts_delivered), False, pygame.Color('white')), (constants.WIDTH - 110, constants.HEIGHT * 0.30 + 45))
 
             # Speed updating
             road.set_animation_speed(rpm)
@@ -157,17 +160,32 @@ if __name__ == "__main__":
             sprites.update()
             sprites.draw(screen)
 
+            # Show highest_score
+            if highest_score > 0:
+                screen.blit(
+                    score_text.render("1ST - {} DONUTS".format(highest_score), False, (137, 0, 27)),
+                    (constants.WIDTH * 0.28, constants.HEIGHT * 0.15)
+                )
+
             # Show countdown on game end
             if game_controller.game_duration - game_controller.get_time() <= 5:
                 screen.blit(
-                    countdown_text.render(str(game_controller.game_duration - game_controller.get_time()), False, (255, 255, 255)),
-                    (constants.WIDTH / 2 - 25, constants.HEIGHT / 2 - 25)
+                    countdown_text.render(str(game_controller.game_duration - game_controller.get_time()), False, (43, 25, 91)),
+                    (constants.WIDTH / 2 - 30, constants.HEIGHT / 2 - 100)
                 )
         elif game_controller.is_resuming():
+            if donuts_delivered > highest_score: show_record = True
+
+            if show_record:
+                highest_score = donuts_delivered
+                text = "RECORD! {} DONUTS".format(donuts_delivered)
+            else:
+                text = "        {} DONUTS".format(donuts_delivered)
+
             screen.blit(resuming, (0, 0))
             screen.blit(
-                resuming_text.render("{} donuts".format(donuts_delivered), False, (255, 255, 255)),
-                (constants.WIDTH * 0.31, constants.HEIGHT * 0.70)
+                resuming_text.render(text, False, (137, 0, 27)),
+                (constants.WIDTH * 0.28, constants.HEIGHT * 0.70)
             )
         elif game_controller.is_finished():
             rpm = 0
@@ -176,6 +194,7 @@ if __name__ == "__main__":
             kmh = 0
             show_donuts_ticks = 0
             donuts_delivered = 0
+            show_record = False
             donuts.set_animation_speed(0)
             game_controller.end()
 
