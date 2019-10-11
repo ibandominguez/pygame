@@ -18,10 +18,14 @@ Specific size: pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 Full screen: pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 Monitor size: pygame.display.set_mode((monitor.current_w, monitor.current_h))
 """
+if constants.FULLSCREEN:
+    monitor = pygame.display.Info()
+    constants.WIDTH = monitor.current_w
+    constants.HEIGHT = monitor.current_h
+
 counter = 0
 start = 0
 end = 0
-monitor = pygame.display.Info()
 screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 clock = pygame.time.Clock()
 rpm = 0
