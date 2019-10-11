@@ -22,7 +22,7 @@ if constants.FULLSCREEN:
     monitor = pygame.display.Info()
     constants.WIDTH = monitor.current_w
     constants.HEIGHT = monitor.current_h
-    screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT)) # TODO: add to params => , pygame.FULLSCREEN
 else:
     screen = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 

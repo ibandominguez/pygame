@@ -1,6 +1,6 @@
 # Game Config
 TITLE = 'Siente la energia'
-FULLSCREEN=False
+FULLSCREEN=True
 WIDTH = int(1080 * 0.5)
 HEIGHT = int(1920 * 0.5)
 FPS = 100
