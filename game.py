@@ -94,92 +94,92 @@ countdown_text = pygame.font.SysFont(pygame.font.get_default_font(), 100)
 debug_text = pygame.font.SysFont(pygame.font.get_default_font(), 18)
 resuming_text = pygame.font.SysFont(pygame.font.get_default_font(), 60)
 
+if __name__ == "__main__":
+    while running:
+        clock.tick(constants.FPS)
 
-while running:
-    clock.tick(constants.FPS)
-
-    """
-    Handle Pygame Events
-    """
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_BACKSPACE:
+        """
+        Handle Pygame Events
+        """
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    running = False
+            if event.type == pygame.QUIT:
                 running = False
-        if event.type == pygame.QUIT:
-            running = False
 
-    """
-    KeyControl
-    """
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP] and rpm < 500: rpm += 1
-    if keys[pygame.K_DOWN] and rpm > 0: rpm -= 1
+        """
+        KeyControl
+        """
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP] and rpm < 500: rpm += 1
+        if keys[pygame.K_DOWN] and rpm > 0: rpm -= 1
 
-    """
-    Game Logic, based on timing and playing
-    """
-    if game_controller.is_standing_by():
-        if rpm > 0: game_controller.start()
-        else:
-            intro_sprites.update()
-            intro_sprites.draw(screen)
-    elif game_controller.is_playing():
-        # Calculations
-        if game_controller.every_seconds(1):
-            ms = round(((0.35 * 2 * math.pi * rpm) / 60), 2)
-            kmh = round(ms * 3.6, 2)
-            meters = round(meters + ms, 2)
-            meter_counter += ms
-
-            # Donuts logics
-            if meter_counter > 10:
-                meter_counter = 0
-                donuts_delivered += 10
-                show_donuts_ticks += 5
-            if show_donuts_ticks > 0:
-                donuts.set_animation_speed(30)
-                show_donuts_ticks -= 1
+        """
+        Game Logic, based on timing and playing
+        """
+        if game_controller.is_standing_by():
+            if rpm > 0: game_controller.start()
             else:
-                donuts.set_animation_speed(0)
+                intro_sprites.update()
+                intro_sprites.draw(screen)
+        elif game_controller.is_playing():
+            # Calculations
+            if game_controller.every_seconds(1):
+                ms = round(((0.35 * 2 * math.pi * rpm) / 60), 2)
+                kmh = round(ms * 3.6, 2)
+                meters = round(meters + ms, 2)
+                meter_counter += ms
 
-        # Screen filling
-        screen.blit(background, (0, 0))
-        screen.blit(sign, (0, constants.HEIGHT * 0.30))
-        screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, constants.HEIGHT * 0.30))
-        screen.blit(debug_text.render("{} kmh".format(kmh), False, pygame.Color('white')), (52, constants.HEIGHT * 0.30 + 48))
-        screen.blit(debug_text.render("{} donuts".format(donuts_delivered), False, pygame.Color('white')), (constants.WIDTH - 108, constants.HEIGHT * 0.30 + 48))
+                # Donuts logics
+                if meter_counter > 10:
+                    meter_counter = 0
+                    donuts_delivered += 10
+                    show_donuts_ticks += 5
+                if show_donuts_ticks > 0:
+                    donuts.set_animation_speed(30)
+                    show_donuts_ticks -= 1
+                else:
+                    donuts.set_animation_speed(0)
 
-        # Speed updating
-        road.set_animation_speed(rpm)
-        bike.set_animation_speed(rpm)
+            # Screen filling
+            screen.blit(background, (0, 0))
+            screen.blit(sign, (0, constants.HEIGHT * 0.30))
+            screen.blit(pygame.transform.flip(sign, True, False), (constants.WIDTH - 128, constants.HEIGHT * 0.30))
+            screen.blit(debug_text.render("{} kmh".format(kmh), False, pygame.Color('white')), (52, constants.HEIGHT * 0.30 + 48))
+            screen.blit(debug_text.render("{} donuts".format(donuts_delivered), False, pygame.Color('white')), (constants.WIDTH - 108, constants.HEIGHT * 0.30 + 48))
 
-        # Sprites drawing
-        sprites.update()
-        sprites.draw(screen)
+            # Speed updating
+            road.set_animation_speed(rpm)
+            bike.set_animation_speed(rpm)
 
-        # Show countdown on game end
-        if game_controller.game_duration - game_controller.get_time() <= 5:
+            # Sprites drawing
+            sprites.update()
+            sprites.draw(screen)
+
+            # Show countdown on game end
+            if game_controller.game_duration - game_controller.get_time() <= 5:
+                screen.blit(
+                    countdown_text.render(str(game_controller.game_duration - game_controller.get_time()), False, (255, 255, 255)),
+                    (constants.WIDTH / 2 - 25, constants.HEIGHT / 2 - 25)
+                )
+        elif game_controller.is_resuming():
+            screen.blit(resuming, (0, 0))
             screen.blit(
-                countdown_text.render(str(game_controller.game_duration - game_controller.get_time()), False, (255, 255, 255)),
-                (constants.WIDTH / 2 - 25, constants.HEIGHT / 2 - 25)
+                resuming_text.render("{} donuts".format(donuts_delivered), False, (255, 255, 255)),
+                (constants.WIDTH * 0.31, constants.HEIGHT * 0.70)
             )
-    elif game_controller.is_resuming():
-        screen.blit(resuming, (0, 0))
-        screen.blit(
-            resuming_text.render("{} donuts".format(donuts_delivered), False, (255, 255, 255)),
-            (constants.WIDTH * 0.31, constants.HEIGHT * 0.70)
-        )
-    elif game_controller.is_finished():
-        rpm = 0
-        meters = 0
-        meter_counter = 0
-        kmh = 0
-        show_donuts_ticks = 0
-        donuts_delivered = 0
-        donuts.set_animation_speed(0)
-        game_controller.end()
+        elif game_controller.is_finished():
+            rpm = 0
+            meters = 0
+            meter_counter = 0
+            kmh = 0
+            show_donuts_ticks = 0
+            donuts_delivered = 0
+            donuts.set_animation_speed(0)
+            game_controller.end()
 
-    pygame.display.flip()
+        pygame.display.flip()
 
 
-pygame.quit()
+    pygame.quit()
