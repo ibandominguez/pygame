@@ -65,11 +65,11 @@ def calculate(channel):
     global timeDeathFlag
     
     timeDeathFlag=0
-    print ("rpm Time:"+str(timeDeath) + " " +"RPM:" + str(rpm))
+    print ("rpm time:"+str(end-start)+"rpm DeathTime:"+str(timeDeath) + " " +"RPM:" + str(rpm))
     counter = counter + 1
     end = time.time()  
-    rpm = int((1.0 / (end - start)) * 60.0)
-    rpm = rpm if rpm <= 800 else 800
+    rpm = int((1.0 / (end-start)) * 60.0)
+    rpm = rpm if rpm <= constants.RPM_LIMIT else constants.RPM_LIMIT
     start = time.time()
     #print (rpm)
 
@@ -80,7 +80,7 @@ try:
     GPIO.setup(2, GPIO.IN)
     GPIO.setup(3, GPIO.OUT)
     GPIO.output(3, False)
-    GPIO.add_event_detect(2, GPIO.RISING, callback=calculate, bouncetime=60)
+    GPIO.add_event_detect(2, GPIO.RISING, callback=calculate, bouncetime=constants.BOUNCE_TIME)
 except Exception as e:
     print('RPI module not found, Sensor not initialized')
 
