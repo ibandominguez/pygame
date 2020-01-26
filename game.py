@@ -29,11 +29,17 @@ highest_score = 0
 counter = 0
 start = 0
 end = 0
+timeDeath=0
+timeDeathFlag=0
+timeDeathStart=0
+timeDeathEnd=0
 clock = pygame.time.Clock()
 rpm = 0
 meters = 0
 meter_counter = 0
 kmh = 0
+rpmTime = 1
+timeDeath = 0
 running = True
 show_donuts_ticks = 0
 donuts_delivered = 0
@@ -56,12 +62,16 @@ def calculate(channel):
     global rpm
     global start
     global end
-
+    global timeDeathFlag
+    
+    timeDeathFlag=0
+    print ("rpm Time:"+str(timeDeath) + " " +"RPM:" + str(rpm))
     counter = counter + 1
-    end = time.time()
+    end = time.time()  
     rpm = int((1.0 / (end - start)) * 60.0)
-    rpm = rpm if rpm <= 500 else 500
+    rpm = rpm if rpm <= 800 else 800
     start = time.time()
+    #print (rpm)
 
 try:
     import RPi.GPIO as GPIO
@@ -70,7 +80,7 @@ try:
     GPIO.setup(2, GPIO.IN)
     GPIO.setup(3, GPIO.OUT)
     GPIO.output(3, False)
-    GPIO.add_event_detect(2, GPIO.RISING, callback=calculate, bouncetime=30)
+    GPIO.add_event_detect(2, GPIO.RISING, callback=calculate, bouncetime=60)
 except Exception as e:
     print('RPI module not found, Sensor not initialized')
 
@@ -100,7 +110,7 @@ score_text = pygame.font.Font(os.getcwd() + '/assets/donuts.ttf', 30)
 if __name__ == "__main__":
     while running:
         clock.tick(constants.FPS)
-
+   
         """
         Handle Pygame Events
         """
@@ -128,12 +138,22 @@ if __name__ == "__main__":
                 intro_sprites.draw(screen)
         elif game_controller.is_playing():
             # Calculations
+        
+            timeDeathEnd=time.time()
+            timeDeath=timeDeathEnd-timeDeathStart
+            
+            if timeDeathFlag == 0:
+                timeDeathStart=time.time()
+                timeDeathFlag = 1
+            
+            if timeDeath > constants.DEATH_TIME_LIMIT:
+                rpm=0
             if game_controller.every_seconds(1):
                 ms = round(((0.35 * 2 * math.pi * rpm) / 60), 2)
                 kmh = round(ms * 3.6, 2)
                 meters = round(meters + ms, 2)
                 meter_counter += ms
-
+            
                 # Donuts logics
                 if meter_counter > 10:
                     meter_counter = 0
@@ -202,3 +222,4 @@ if __name__ == "__main__":
 
 
     pygame.quit()
+

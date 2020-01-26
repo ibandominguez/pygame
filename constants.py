@@ -1,11 +1,12 @@
 # Game Config
 TITLE = 'Siente la energia'
-FULLSCREEN=True
+FULLSCREEN=False
 WIDTH = int(1080 * 0.5)
 HEIGHT = int(1920 * 0.5)
 FPS = 100
 GAME_DURATION=45
 GAME_RESUMING=15
+DEATH_TIME_LIMIT=2
 
 # Colors
 WHITE = (255, 255, 255)
